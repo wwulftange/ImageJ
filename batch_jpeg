@@ -1,0 +1,15 @@
+source_dir = getDirectory("Source Directory");
+target_dir = getDirectory("Target Directory");
+if (File.exists(source_dir) && File.exists(target_dir)) {
+    setBatchMode(true);
+    list = getFileList(source_dir);
+    for (i=0; i<list.length; i++) {
+        if (endsWith(list[i], ".vsi")) {
+            open(source_dir + "/" + list[i]);
+            run("Bio-Formats Importer", "open=["+source_dir+"/"+list[i]+"] autoscale color_mode=Default rois_import=[ROI manager] view=Hyperstack stack_order=XYCZT series_1");
+            saveAs("Jpeg", target_dir+"/"+list[i]+".jpg");
+	   	close();
+	    showProgress(i, list.length);
+        }
+    }
+}
